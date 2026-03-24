@@ -1,6 +1,15 @@
+
+import cv2
+import os
+import argparse
+
 def demo(image_path: str, out_dir: str = "output/transforms"):
     os.makedirs(out_dir, exist_ok=True)
     img = cv2.imread(image_path)
+    if img is not None:
+        print(f"Successfully loaded image '{image_path}' with shape: {img.shape}")
+    else:
+        print(f"Failed to load image '{image_path}'")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
