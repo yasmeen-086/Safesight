@@ -25,10 +25,10 @@ def get_birdseye_view(frame):
 
     return warped_image, matrix
 
-def map_detection_to_ground(point, H_matrix):
-    pt = np.array([[[point[0], point[1]]]], dtype=np.float32)
-    transformed_pt = cv2.perspectiveTransform(pt, H_matrix)
-    return transformed_pt[0][0].tolist()
+def map_detection_to_ground(coords, matrix):
+    pts = np.array([[coords]], dtype='float32')
+    ground_pts = cv2.perspectiveTransform(pts, matrix)
+    return ground_pts
 
 warped_img, H_matrix = get_birdseye_view(image) 
 

@@ -1,6 +1,3 @@
-# Safesight 
-A project under the course UCS532: Computer vision (3W13)
-
 This `README.md` is designed to explain the mathematical logic behind your Projective Transformation code, specifically for an industrial safety context.
 
 ---
@@ -51,10 +48,3 @@ When mapping detections to a ground plane, using the center of a bounding box (t
 ---
 
 **Next Step**: Would you like me to add a section to this README explaining how the **Histogram Equalization** we linked earlier improves these calculations in low-light conditions?
-
-## Documentation and Articles
-
-| Article | Link |
-| :--- | :--- |
-| The introduction | [Read Article](https://ayushgarg282800.substack.com/p/what-makes-a-computer-vision-project) |
-| The research methodology | [Read Article](https://shubhampathneja21.substack.com/p/the-closed-loop-workflow-a-better) |
