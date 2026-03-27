@@ -20,21 +20,13 @@ import cv2
 import numpy as np
 
 def gamma_correction(image: np.ndarray, gamma: float = 1.0) -> np.ndarray:
-    """
-    Apply gamma correction via precomputed lookup table.
-
-    Args:
-        gamma: < 1 brightens (night/shadow), > 1 darkens (glare)
-               Typical SafeSight values: 0.6–0.8 for dark factories
-    """
+    
     if gamma == 1.0:
         return image.copy()
 
-    # Build LUT: one corrected value per input intensity
     lut = np.array([
         np.clip(((i / 255.0) ** gamma) * 255.0, 0, 255)
         for i in range(256)
     ], dtype=np.uint8)
 
-    # Apply: each pixel value replaced by lut[pixel_value]
     return cv2.LUT(image, lut)

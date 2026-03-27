@@ -26,15 +26,7 @@ import numpy as np
 def sharpen(image: np.ndarray,
             amount: float = 1.0,
             blur_ksize: int = 5) -> np.ndarray:
-    """
-    Unsharp mask sharpening.
-
-    Args:
-        amount    : sharpening strength λ (1.0 standard, 2.0 aggressive)
-        blur_ksize: Gaussian kernel size (must be odd, larger = more blur subtracted)
-    """
-    # Low-frequency approximation (smooth version)
+    
     blurred = cv2.GaussianBlur(image, (blur_ksize, blur_ksize), sigmaX=0)
 
-    # sharp = (1+λ)·original - λ·blurred
     return cv2.addWeighted(image, 1.0 + amount, blurred, -amount, gamma=0)
