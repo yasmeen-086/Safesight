@@ -14,6 +14,7 @@ In a standard camera view, parallel lines (like floor markings) appear to conver
 
 ### The Homography Matrix
 The matrix $H$ has 8 degrees of freedom:
+
 $$
 H = \begin{bmatrix} h_{11} & h_{12} & h_{13} \\ h_{21} & h_{22} & h_{23} \\ h_{31} & h_{32} & 1 \end{bmatrix}
 $$
@@ -29,12 +30,14 @@ The function `cv2.getPerspectiveTransform` takes 4 pairs of points. Each point p
 
 ### Step 2: Point Transformation
 To map a worker's detection (e.g., feet at $[x, y]$) to the ground, we use **Homogeneous Coordinates**. We add a third dimension $w=1$:
+
 $$
 \begin{bmatrix} x' \\ y' \\ w' \end{bmatrix} = H \cdot \begin{bmatrix} x \\ y \\ 1 \end{bmatrix}
 $$
 
 ### Step 3: Perspective Division (Normalization)
 The resulting $x'$ and $y'$ are in "projective space." To get the final pixel coordinates on your 2D map, the computer must divide by the scaling factor $w'$:
+
 $$
 \text{Map}_X = \frac{x'}{w'} \quad , \quad \text{Map}_Y = \frac{y'}{w'}
 $$
