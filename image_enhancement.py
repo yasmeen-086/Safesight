@@ -3,6 +3,11 @@ import argparse
 import cv2
 import numpy as np
 
+from image_enhancement_functions.gamma import gamma_correction
+from image_enhancement_functions.sharpen import sharpen
+from image_enhancement_functions.CLAHE import apply_clahe
+from image_enhancement_functions.histogram import histogram_equalise
+
 def analyse_frame(frame: np.ndarray) -> dict:
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
