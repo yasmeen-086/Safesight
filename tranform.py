@@ -4,14 +4,16 @@ import numpy as np
 image = cv2.imread("image.png")
 
 def get_birdseye_view(frame):
-    src_pts = np.float32([,  # Top-left
-        ,  # Top-right
-        ,  # Bottom-right
-             # Bottom-left
+    src_pts = np.float32([
+        [450, 310],  # Top-left
+        [820, 310],  # Top-right
+        [1150, 750], # Bottom-right
+        [120, 750]   # Bottom-left
     ])
 
     width, height = 500, 600
-    dst_pts = np.float32([,              # Top-left
+    dst_pts = np.float32([
+        [0, 0],              # Top-left
         [width, 0],          # Top-right
         [width, height],     # Bottom-right
         [0, height]          # Bottom-left
@@ -23,12 +25,10 @@ def get_birdseye_view(frame):
 
     return warped_image, matrix
 
-src_coords = np.float32([
-    [450, 310],  # Top-left
-    [820, 310],  # Top-right
-    [1150, 750], # Bottom-right
-    [120, 750]   # Bottom-left
-])
+def map_detection_to_ground(point, H_matrix):
+    pt = np.array([[[point[0], point[1]]]], dtype=np.float32)
+    transformed_pt = cv2.perspectiveTransform(pt, H_matrix)
+    return transformed_pt[0][0].tolist()
 
 warped_img, H_matrix = get_birdseye_view(image) 
 
