@@ -56,6 +56,47 @@ def get_enhancement_trigger(frame: np.ndarray) -> str:
 
     return "NONE"
 
+def apply_trigger(frame: np.ndarray,
+                  verbose: bool = False) -> np.ndarray:
+    """
+    One-call function: detects the problem, picks the right
+    enhancement, applies it, returns the enhanced frame.
+
+    Plug this directly into your pipeline loop:
+
+        for frame in source.stream():
+            frame = apply_trigger(frame, verbose=True)
+            helmet_results = helmet_detector.detect(frame)
+            fire_results   = fire_detector.detect(frame)
+
+    Args:
+        frame   : raw BGR frame from VideoSource
+        verbose : print which enhancement was applied + stats
+
+    Returns:
+        Enhanced BGR frame (or original if trigger == NONE)
+    """
+    trigger = get_enhancement_trigger(frame)
+
+    enhancement_map = {
+        "GAMMA_DARKEN":   lambda f: gamma_correction(f, gamma=2.0),
+        "SHARPEN":        lambda f: sharpen(f, amount=1.2, blur_ksize=5),
+        "CLAHE":          lambda f: apply_clahe(f, clip_limit=2.0),
+        "HISTOGRAM_EQ":   lambda f: histogram_equalise(f),
+        "GAMMA_BRIGHTEN": lambda f: gamma_correction(f, gamma=0.65),
+        "NONE":           lambda f: f,
+    }
+
+    if verbose:
+        stats = analyse_frame(frame)
+        print(f"[Trigger] {trigger:20s} | "
+              f"mean={stats['mean']:.1f}  "
+              f"std={stats['std']:.1f}  "
+              f"shadow={stats['shadow_ratio']:.2f}  "
+              f"blur={stats['blur_score']:.1f}")
+
+    return enhancement_map[trigger](frame)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--image",  type=str,  help="Path to input image")
