@@ -1,6 +1,24 @@
 import os
 import argparse
 import cv2
+import numpy as np
+
+def analyse_frame(frame: np.ndarray) -> dict:
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    mean         = float(np.mean(gray))
+    std          = float(np.std(gray))
+    shadow_ratio = float(np.sum(gray < 50) / gray.size)
+
+    laplacian  = cv2.Laplacian(gray, cv2.CV_64F)
+    blur_score = float(laplacian.var())
+
+    return {
+        "mean":         round(mean, 2),
+        "std":          round(std, 2),
+        "shadow_ratio": round(shadow_ratio, 3),
+        "blur_score":   round(blur_score, 2),
+    }
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
