@@ -20,6 +20,42 @@ def analyse_frame(frame: np.ndarray) -> dict:
         "blur_score":   round(blur_score, 2),
     }
 
+def get_enhancement_trigger(frame: np.ndarray) -> str:
+    """
+    Analyses the frame statistics and returns which enhancement
+    should be applied.
+
+    Thresholds (tune these for your specific factory cameras):
+        mean > 190          → "GAMMA_DARKEN"
+        blur_score < 100    → "SHARPEN"
+        shadow_ratio > 0.30 → "CLAHE"
+        std < 40            → "HISTOGRAM_EQ"
+        mean < 85           → "GAMMA_BRIGHTEN"
+        else                → "NONE"
+
+    """
+    stats = analyse_frame(frame)
+
+    if stats["mean"] > 190:
+        return "GAMMA_DARKEN"
+
+    if stats["shadow_ratio"] > 0.30:
+        return "CLAHE"
+
+    if stats["mean"] < 85:
+        return "GAMMA_BRIGHTEN"
+
+    if stats["std"] < 30:
+        return "HISTOGRAM_EQ"
+
+    if stats["blur_score"] < 100 and stats["std"] >= 30:
+        return "SHARPEN"
+
+    if stats["std"] < 35:
+        return "HISTOGRAM_EQ"
+
+    return "NONE"
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--image",  type=str,  help="Path to input image")
@@ -31,7 +67,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.trigger_demo and args.image:
-        # ── Auto-trigger demo ──────────────────────────────────────
         img = cv2.imread(args.image)
         if img is None:
             raise FileNotFoundError(f"Cannot read: {args.image}")
