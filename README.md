@@ -61,13 +61,10 @@ $$
 ## 4. Why Use "Bottom-Center" for Coordinates?
 When mapping detections to a ground plane, using the center of a bounding box (the person's waist) will result in a "floating" error. By using the **bottom-center** (the feet), we ensure the coordinate exists exactly on the $Z=0$ plane where the homography matrix is valid.
 
----
-
-**Next Step**: Would you like me to add a section to this README explaining how the **Histogram Equalization** we linked earlier improves these calculations in low-light conditions?
 
 ## Documentation and Articles
 
 | Article | Link |
 | :--- | :--- |
-| The introduction | [Read Article](https://ayushgarg282800.substack.com/p/what-makes-a-computer-vision-project) |
-| The research methodology | [Read Article](https://shubhampathneja21.substack.com/p/the-closed-loop-workflow-a-better) |
+| The introduction | https://ayushgarg282800.substack.com/p/what-makes-a-computer-vision-project |
+| The research methodology | https://shubhampathneja21.substack.com/p/the-closed-loop-workflow-a-better |
