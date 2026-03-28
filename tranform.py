@@ -1,8 +1,6 @@
 import cv2
 import numpy as np
 
-image = cv2.imread("image.png")
-
 def get_birdseye_view(frame):
     src_pts = np.float32([
         [450, 310],  # Top-left
@@ -30,9 +28,14 @@ def map_detection_to_ground(coords, matrix):
     ground_pts = cv2.perspectiveTransform(pts, matrix)
     return ground_pts
 
-warped_img, H_matrix = get_birdseye_view(image) 
-
-worker_feet = [600, 500]
-ground_coord = map_detection_to_ground(worker_feet, H_matrix)
-
-print(f"Worker is at ground position: {ground_coord}")
+if __name__ == "__main__":
+    image = cv2.imread("image.png")
+    if image is not None:
+        warped_img, H_matrix = get_birdseye_view(image) 
+        
+        worker_feet = [600, 500]
+        ground_coord = map_detection_to_ground(worker_feet, H_matrix)
+        
+        print(f"Worker is at ground position: {ground_coord}")
+    else:
+        print("Error: Could not read image.png")
