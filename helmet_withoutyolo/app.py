@@ -2,6 +2,7 @@ import streamlit as st
 import cv2
 import tempfile
 from detector import process_frame
+
 import time
 
 st.set_page_config(layout="wide")

@@ -1,5 +1,6 @@
 import cv2
 from color import helmet_color_mask, clean_mask
+import os 
 
 # ---------------- PERSON DETECTOR ----------------
 hog = cv2.HOGDescriptor()
@@ -8,7 +9,12 @@ hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 import joblib
 from hog_utils import extract_hog
 
-model = joblib.load("model/svm_model.pkl")
+base_dir = os.path.dirname(__file__)
+model_path = os.path.join(base_dir, "model", "svm_model.pkl")
+
+model = joblib.load(model_path)
+
+# model = joblib.load("model/svm_model.pkl")
 
 def detect_persons(frame):
     boxes, _ = hog.detectMultiScale(frame,
